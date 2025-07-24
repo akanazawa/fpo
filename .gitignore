@@ -1,0 +1,11 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+venv
+*.pth
+.idea/
+wandb/
+*.pkl
+CLAUDE.md
