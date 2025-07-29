@@ -60,10 +60,14 @@ This package has been tested in Python 3.12 on an RTX 4090. We generally use `co
 
 The final cell of each training notebook renders a result from a trained policy.
 
-**Example on `CheetahRun`, from `train_fpo.ipynb`:**
+**Examples on `CheetahRun`, from `train_fpo.ipynb`:**
+
+https://github.com/user-attachments/assets/77d61984-c9a0-44e2-b9c0-9fa9ff934287
 
 https://github.com/user-attachments/assets/f305430a-35d2-46c0-870e-99e63dcb6eda
 
-**Example on `CheetahRun`, from `train_ppo.ipynb`:**
+**Examples on `CheetahRun`, from `train_ppo.ipynb`:**
 
 https://github.com/user-attachments/assets/99a4eb94-6edb-4391-90fb-d986d3c06211
+
+https://github.com/user-attachments/assets/bacda075-d58b-41f6-a731-e03ba68b3bec
