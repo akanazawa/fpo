@@ -29,3 +29,8 @@ Our initial release contains two FPO implementations. Stay tuned for more update
 
 `playground/` contains JAX code for both FPO and PPO baselines in the DeepMind Control Suite experiments, which are based on
 [MuJoCo Playground](https://github.com/google-deepmind/mujoco_playground) and [Brax](https://github.com/google/brax).
+
+
+## Acknowledgements
+
+We thank Qiyang (Colin) Li, Oleg Rybkin, Lily Goli and Michael Psenka for helpful discussions and feedback on the manuscript. We thank Arthur Allshire, Tero Karras, Miika Aittala, Kevin Zakka and Seohong Park for insightful input and feedback on implementation details and the broader context of this work.
