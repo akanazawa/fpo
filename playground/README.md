@@ -1,4 +1,4 @@
-# Flow Matching Policy Gradients + MuJoCo Playground
+# FPO + MuJoCo Playground
 
 This directory contains implementations of FPO and PPO in MuJoCo Playground.
 It's adapted from and inherits implementation details from
@@ -55,3 +55,15 @@ This package has been tested in Python 3.12 on an RTX 4090. We generally use `co
    python scripts/train_fpo.py --help
    python scripts/train_ppo.py --help
    ```
+
+## Results
+
+The final cell of each training notebook renders a result from a trained policy.
+
+**Example on `CheetahRun`, from `train_fpo.ipynb`:**
+
+https://github.com/user-attachments/assets/f305430a-35d2-46c0-870e-99e63dcb6eda
+
+**Example on `CheetahRun`, from `train_ppo.ipynb`:**
+
+https://github.com/user-attachments/assets/99a4eb94-6edb-4391-90fb-d986d3c06211
