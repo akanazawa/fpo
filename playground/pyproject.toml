@@ -15,6 +15,7 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = [
+    "jax",
     "playground==0.0.5",
     "matplotlib==3.9.2",
     "jax_dataclasses==1.6.1",

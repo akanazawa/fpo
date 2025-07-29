@@ -36,7 +36,7 @@ This package has been tested in Python 3.12 on an RTX 4090. We generally use `co
 1. Install JAX into your environment with CUDA support:
 
    ```bash
-   pip install "jax[cuda12]==0.6.1"
+   pip install "jax[cuda12]==0.7.0"
    ```
 
 2. Install the package:
