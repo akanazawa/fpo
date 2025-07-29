@@ -27,14 +27,15 @@ class FpoConfig:
     n_samples_per_action: jdc.Static[int] = 8
     average_losses_before_exp: jdc.Static[bool] = True
 
-    discretize_t_for_training: jdc.Static[bool] = False
+    discretize_t_for_training: jdc.Static[bool] = True
     feather_std: float = 0.0
     policy_mlp_output_scale: float = 0.25
 
     loss_mode: jdc.Static[Literal["fpo", "denoising_mdp"]] = "fpo"
     final_steps_only: jdc.Static[bool] = False
 
-    # Fixed noise level for sampling via denoising MDP.
+    # Fixed noise level for sampling via denoising MDP. This is used for
+    # DDPO-style policy updates.
     sde_sigma: float = 0.0
 
     clipping_epsilon: float = 0.05
@@ -237,7 +238,7 @@ class FpoState:
         schedule = self.get_schedule()
         flow_steps = schedule.t_current.shape[0]
 
-        # Verify input shapes
+        # Verify input shapes.
         assert total_states == flow_steps + 1, (
             f"Expected {flow_steps + 1} states, got {total_states}"
         )
@@ -246,17 +247,17 @@ class FpoState:
         assert schedule.t_next.shape == (flow_steps,)
         assert obs_norm.shape == (*batch_dims, self.env.observation_size)
 
-        # Extract states for all transitions
+        # Extract states for all transitions.
         x_t = x_t_path[..., :-1, :]  # (*, flow_steps, action_dim) - start states
         x_t_next = x_t_path[..., 1:, :]  # (*, flow_steps, action_dim) - end states
         assert x_t.shape == (*batch_dims, flow_steps, action_dim)
         assert x_t_next.shape == (*batch_dims, flow_steps, action_dim)
 
-        # Compute dt from the actual timestep differences
+        # Compute dt from the actual timestep differences.
         dt = schedule.t_next - schedule.t_current  # (flow_steps,)
         assert dt.shape == (flow_steps,)
 
-        # Get predicted reverse velocities for all steps at once
+        # Get predicted reverse velocities for all steps at once.
         velocity_pred = (
             networks.flow_mlp_fwd(
                 self.params.policy,
@@ -277,20 +278,18 @@ class FpoState:
             * self.config.policy_mlp_output_scale
         )
 
-        # Compute expected next states (simplified with fixed sigma)
+        # Simple expected next state with fixed sigma.
         assert velocity_pred.shape == x_t.shape == (*batch_dims, flow_steps, action_dim)
-
-        # Simple expected next state with fixed sigma - no time-dependent correction
         expected_x_t_next = x_t + dt[None, :, None] * velocity_pred
         assert expected_x_t_next.shape == x_t_next.shape
 
-        # Compute realized noise with fixed sigma
+        # Compute realized noise with fixed sigma.
         realized_noise = (x_t_next - expected_x_t_next) / (
-            self.config.sde_sigma * jnp.sqrt(-dt) + 1e-6
+            self.config.sde_sigma + 1e-6
         )[None, :, None]
         assert realized_noise.shape == x_t_next.shape
 
-        # Log probability of standard normal: -0.5 * ||z||^2 - d/2 * log(2π)
+        # Log probability of standard normal: -0.5 * ||z||^2 - d/2 * log(2pi).
         all_log_likelihoods = (
             -0.5 * jnp.sum(realized_noise**2, axis=-1)  # (*, flow_steps)
             - 0.5 * action_dim * jnp.log(2 * jnp.pi)
