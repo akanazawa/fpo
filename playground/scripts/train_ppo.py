@@ -8,7 +8,7 @@ import tyro
 import wandb
 from jax import numpy as jnp
 from mujoco_playground import dm_control_suite, locomotion, registry
-from mujoco_playground.config import dm_control_suite_params, locomotion_params
+from mujoco_playground.config import dm_control_suite_params
 from tqdm import tqdm
 
 from flow_policy import ppo, rollouts
@@ -33,10 +33,7 @@ def main(
     """Main function to train PPO on a specified environment."""
 
     env_config = registry.get_default_config(env_name)
-    try:
-        ppo_params = dm_control_suite_params.brax_ppo_config(env_name)
-    except ValueError:
-        ppo_params = locomotion_params.brax_ppo_config(env_name)
+    ppo_params = dm_control_suite_params.brax_ppo_config(env_name)
 
     if learning_rate is not None:
         ppo_params.learning_rate = learning_rate
@@ -73,6 +70,7 @@ def main(
 
     times = [time.time()]
     for i in tqdm(range(outer_iters)):
+        # Evaluation. Note: this might be better done *after* the training step.
         if i in eval_iters:
             eval_outputs = rollouts.eval_policy(
                 agent_state,
@@ -81,10 +79,10 @@ def main(
                 max_episode_length=config.episode_length,
             )
 
-            # Convert to numpy for printing
+            # Convert to numpy for printing.
             s_np = {k: onp.array(v) for k, v in eval_outputs.scalar_metrics.items()}
 
-            # Print summary
+            # Print summary.
             print(f"Eval metrics at step {i}:")
             print(
                 f"  Reward: mean={s_np['reward_mean']:.2f}, min={s_np['reward_min']:.2f}, max={s_np['reward_max']:.2f}, std={s_np['reward_std']:.2f}"
@@ -93,9 +91,10 @@ def main(
                 f"  Steps:  mean={s_np['steps_mean']:.1f}, min={s_np['steps_min']:.1f}, max={s_np['steps_max']:.1f}, std={s_np['steps_std']:.1f}"
             )
 
-            # Log to wandb using the new API
+            # Log to wandb using the new API.
             eval_outputs.log_to_wandb(wandb_run, step=i)
 
+        # Training step.
         rollout_state, transitions = rollout_state.rollout(
             agent_state,
             episode_length=config.episode_length,

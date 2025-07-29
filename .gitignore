@@ -1,7 +1,24 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+*.swp
+*.swo
+*.pyc
+*.egg-info
+*.ipynb_checkpoints
+__pycache__
+.coverage
+htmlcov
+.mypy_cache
+.dmypy.json
+.hypothesis
+.envrc
+.lvimrc
+.DS_Store
+.envrc
+.vite
+build
+src/viser/client/build
+src/viser/client/.nodeenv
+
+**/.claude/settings.local.json
 
 venv
 *.pth

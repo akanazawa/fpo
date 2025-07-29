@@ -15,12 +15,11 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = [
-    "playground",
-    "jupyterlab-vim",
-    "matplotlib",
-    "jax_dataclasses",
-    "tyro",
-    "wandb",
+    "playground==0.0.5",
+    "matplotlib==3.9.2",
+    "jax_dataclasses==1.6.1",
+    "wandb==0.21.0",
+    "tyro==0.9.26",
 ]
 
 [tool.setuptools.package-data]

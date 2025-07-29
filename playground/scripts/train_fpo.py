@@ -65,6 +65,7 @@ def main(
 
     times = [time.time()]
     for i in tqdm(range(outer_iters)):
+        # Evaluation. Note: this might be better done *after* the training step.
         if i in eval_iters:
             eval_outputs = rollouts.eval_policy(
                 agent_state,
@@ -73,10 +74,10 @@ def main(
                 max_episode_length=config.episode_length,
             )
 
-            # Convert to numpy for printing
+            # Convert to numpy for printing.
             s_np = {k: onp.array(v) for k, v in eval_outputs.scalar_metrics.items()}
 
-            # Print summary
+            # Print summary.
             print(f"Eval metrics at step {i}:")
             print(
                 f"  Reward: mean={s_np['reward_mean']:.2f}, min={s_np['reward_min']:.2f}, max={s_np['reward_max']:.2f}, std={s_np['reward_std']:.2f}"
@@ -85,9 +86,10 @@ def main(
                 f"  Steps:  mean={s_np['steps_mean']:.1f}, min={s_np['steps_min']:.1f}, max={s_np['steps_max']:.1f}, std={s_np['steps_std']:.1f}"
             )
 
-            # Log to wandb using the new API
+            # Log to wandb using the new API.
             eval_outputs.log_to_wandb(wandb_run, step=i)
 
+        # Training step.
         rollout_state, transitions = rollout_state.rollout(
             agent_state,
             episode_length=config.episode_length,

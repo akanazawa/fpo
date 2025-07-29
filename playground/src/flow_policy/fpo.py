@@ -37,16 +37,16 @@ class FpoConfig:
     # Fixed noise level for sampling via denoising MDP.
     sde_sigma: float = 0.0
 
-    clipping_epsilon: float = 0.1
+    clipping_epsilon: float = 0.05
 
     # Based on Brax PPO config:
     batch_size: jdc.Static[int] = 1024
     discounting: float = 0.995
     episode_length: int = 1000
-    learning_rate: float = 1e-3
+    learning_rate: float = 3e-4
     normalize_observations: jdc.Static[bool] = True
     num_envs: jdc.Static[int] = 2048
-    num_evals: jdc.Static[int] = 20
+    num_evals: jdc.Static[int] = 10
     num_minibatches: jdc.Static[int] = 32
     num_timesteps: jdc.Static[int] = 60_000_000
     num_updates_per_batch: jdc.Static[int] = 16
