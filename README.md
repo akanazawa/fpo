@@ -1,98 +1,31 @@
-# GridWorld FPO
+# Flow Matching Policy Gradients
 
-This repo implements **Flow Policy Optimization (FPO)** for continuous-action policy learning in custom grid-world environments.
+This repo implements **Flow Policy Optimization (FPO)** for reinforcement learning in continuous action spaces.
 
 Please see the [blog](https://flowreinforce.github.io/) and [paper](todo) for more details.
 
-It is based on the excellent, beginner-friendly [PPO grid-world repo by Eric Yu](https://github.com/ericyangyu/PPO-for-Beginners)
+<table><tr><td>
+    David&nbsp;McAllister<sup>1,*</sup>, Songwei&nbsp;Ge<sup>1,*</sup>, Brent&nbsp;Yi<sup>1,*</sup>, Chung&nbsp;Min&nbsp;Kim<sup>1</sup>, Ethan&nbsp;Weber<sup>1</sup>, Hongsuk&nbsp;Choi<sup>1</sup>, Haiwen&nbsp;Feng<sup>1,2</sup>, and Angjoo&nbsp;Kanazawa<sup>1</sup>.
+    <strong>Flow Matching Policy Gradients.</strong>
+    arXiV, 2025.
+</td></tr>
+</table>
+<sup>1</sup><em>UC Berkeley</em>, <sup>2</sup><em>Max Planck Institute for Intelligent Systems</em>
 
-You can see the **main differences with PPO** in the following parts of the code:
+## Updates
 
-- `sample_action_with_info` defined in [`diffusion_policy.py`](./models/diffusion_policy.py), called in [`fpo.py`](./models/fpo.py), which samples (eps, t) pairs and pre-computes the conditional flow matching loss ($\text{ELBO}_{old}$) in the paper
-- in [`fpo.py`](./models/fpo.py) the likelihood ratio is replaced by the difference of the cfm losses.
+- **July 28, 2025:** Initial code release.
 
+## Repository Structure
 
-## Installation
+Our initial release contains two FPO implementations. Stay tuned for more updates!
 
-Dependencies (Python 3.8+):
+### Gridworld
 
-```
-pip install -r requirements.txt
-```
+`gridworld/` contains PyTorch code for gridworld experiments, which are based on the
+[Eric Yu's PPO implementation](https://github.com/ericyangyu/PPO-for-Beginners).
 
-## Quick Start
+### MuJoCo Playground
 
-### Training
-```bash
-# Train FPO policy  
-python main.py --method fpo
-
-# Train PPO policy
-python main.py --method ppo
-
-```
-### Testing/Evaluation
-```bash
-# Test trained FPO model
-python main.py --mode test --method fpo --actor_model fpo_actor.pth
-
-# Test trained PPO model
-python main.py --mode test --method ppo --actor_model ppo_actor.pth
-```
-
-
-### Testing a trained policy
-To visualize or evaluate the saved policy in the environment, run:
-
-```
-python main.py --mode test --method fpo --actor_model fpo_actor.pth
-```
-
-
-## Visualization
-
-The environment supports simple matplotlib-based rendering to observe agent behavior in several ways as done in the paper.
-```bash
-# Visualize FPO policy action distributions
-python visualize.py --method fpo
-
-# Visualize at specific state
-python visualize.py --method fpo --specific_state
-
-```
-
-To evaluate and visualize sample trajectory rollouts from fixed states:
-```bash
-# Evaluate and visualize in one step (recommended)
-python eval_and_visualize_trajectories.py --method fpo --actor_model MODEL_PATH
-
-# Or just visualize existing trajectory data (evaluation always saves .pkl file)
-python eval_and_visualize_trajectories.py --visualize-only --input OUTPUT_PKL_FILE
-``` 
-
-
-## Grid World Configuration
-
-Grid environments support multiple modes defined in gridworld.py:
-
-- Configurable grid size, walls, death zones, goal zones
-- Various pre-defined modes accessible via grid_mode hyperparameter
-
-## Core Components
-
-**Entry Point**: `main.py` - Handles training/testing modes, model loading, hyperparameter configuration
-
-**Policy Implementations**:
-- `models/ppo.py` - Base PPO algorithm implementation
-- `modells/fpo.py` - Flow Policy Optimization extending PPO base class
-- `models/diffusion_policy.py` - DiffusionPolicy class extending FeedForwardNN for flow-based sampling
-- `models/network.py` - Base FeedForwardNN neural network implementation
-
-**Environment**: `utils/gridworld.py` - Custom grid-world environment with configurable modes (two_walls, three_goals, etc.)
-
-
-## Acknowledgment
-
-Thanks again to [PPO grid-world repo by Eric Yu](https://github.com/EricYu97/grid-world-ppo)!! 
-
-
+`playground/` contains JAX code for both FPO and PPO baselines in the DeepMind Control Suite experiments, which are based on
+[MuJoCo Playground](https://github.com/google-deepmind/mujoco_playground) and [Brax](https://github.com/google/brax).
