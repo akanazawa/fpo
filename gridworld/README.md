@@ -93,6 +93,6 @@ Grid environments support multiple modes defined in gridworld.py:
 
 ## Acknowledgment
 
-Thanks again to [PPO grid-world repo by Eric Yu](https://github.com/EricYu97/grid-world-ppo)!! 
+Thanks again to [PPO grid-world repo by Eric Yu](https://github.com/ericyangyu/PPO-for-Beginners)!! 
 
 
