@@ -339,7 +339,12 @@ class GridWorldEnv(gym.Env):
 
     def step(self, action):
         move = np.round(np.clip(action, -1, 1)).astype(int)
-        self.pos = np.clip(self.pos + move, 0, self.grid_size - 1)
+
+        new_pos = np.clip(self.pos + move, 0, self.grid_size - 1)
+        if tuple(new_pos) in self.config.wall_cells:
+            new_pos = self.pos  # Stay in current position
+    
+        self.pos = new_pos
         grid_pos = self.pos
         
         r = float(self.reward_map[grid_pos[1], grid_pos[0]])
