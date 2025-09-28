@@ -1,0 +1,136 @@
+[build-system]
+requires = ["Cython>=3.0", "pip>=23.0", "setuptools>=61.0", "wheel", "numpy==1.23.3"]
+
+[project]
+description = "Simplified Perceptual Humanoid Control with Pufferlib"
+name = "puffer-phc"
+authors = [
+    { name = "Kyoung Whan Choe", email = "choe.kyoung@gmail.com" },
+]
+requires-python = ">=3.8,<3.9"
+version = "0.1.1"
+dependencies = [
+    "smpl_sim@git+https://github.com/kywch/SMPLSim.git",
+    "chumpy@git+https://github.com/nico-von-huene/chumpy.git",
+    "carbs@git+https://github.com/PufferAI/carbs.git",    
+]
+
+[tool.pixi.project]
+channels = ["pytorch", "nvidia", "conda-forge"]
+platforms = ["linux-64"]
+
+[tool.pixi.system-requirements]
+cuda = "12.1"
+
+[tool.pixi.dependencies]
+python = ">=3.8,<3.9"
+pip = ">=24.3.1,<25"
+# Match with ubuntu 22.04
+openssl = "==3.0.2"
+cython = ">=3.0.11,<4"
+setuptools = ">=75.3.0,<76"
+wheel = ">=0.45.1,<0.46"
+pre-commit = ">=3.5.0,<4"
+ruff = ">=0.6.2,<0.7"
+wandb = ">=0.16.6,<0.17"
+tyro = ">=0.8.14,<0.9"
+polars = ">=1.5.0,<2"
+joblib = ">=1.4.2,<2"
+
+pytorch = "==2.3.1"
+pytorch-cuda = "==12.1"
+
+# isaacgym deps
+torchvision = ">=0.18.1,<0.19"
+scipy = ">=1.10.1,<2"
+imageio = ">=2.36.0,<3"
+fsspec = ">=2024.10.0,<2025"
+
+[tool.pixi.pypi-dependencies]
+pufferlib = { git = "https://github.com/kywch/PufferLib.git", branch = "isaacgym" }
+
+[tool.pixi.activation]
+scripts = ["env_setup.sh"]
+
+[tool.pixi.tasks]
+test_deps = "python -c 'import isaacgym, torch; print(torch.cuda.is_available())'"
+
+# build gymtorch here, so that vscode debugging can be used
+build_gymtorch = "cd gymtorch; python setup.py clean; python setup.py develop"
+
+
+[tool.ruff]
+target-version = "py38"
+line-length = 120
+indent-width = 4
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["E4", "E7", "E9", "F"]
+ignore = []
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+docstring-code-format = false
+
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+docstring-code-line-length = "dynamic"
