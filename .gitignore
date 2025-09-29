@@ -24,3 +24,16 @@ venv
 wandb/
 *.pkl
 CLAUDE.md
+
+phc/experiments/
+phc/logs/
+phc/wandb/
+phc/smpl/
+phc/gymtorch/build/
+phc/gymtorch/dist/
+phc/.pixi/
+phc/pixi.lock
+
+
+# C extensions
+*.so
