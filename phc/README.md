@@ -90,6 +90,10 @@ python scripts/visualize_from_two_checkpoints.py \
 ```
 
 
+https://github.com/user-attachments/assets/e7127e9a-ec2f-4c2c-8d7b-0f0d549be975
+
+
+
 ## Configuration Details
 
 We adopt most configurations from [Puffer PHC config](https://github.com/kywch/puffer-phc/blob/main/config.ini) to demonstrate a drop-in replacement for FPO in PHC. The main differences are:
