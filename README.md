@@ -30,6 +30,10 @@ Our initial release contains two FPO implementations. Stay tuned for more update
 `playground/` contains JAX code for both FPO and PPO baselines in the DeepMind Control Suite experiments, which are based on
 [MuJoCo Playground](https://github.com/google-deepmind/mujoco_playground) and [Brax](https://github.com/google/brax).
 
+### PHC
+
+`phc/` contains PyTorch code for humanoid control experiments, which are based on the
+[Puffer PHC](https://github.com/kywch/puffer-phc/tree/main).
 
 ## Acknowledgements
 
