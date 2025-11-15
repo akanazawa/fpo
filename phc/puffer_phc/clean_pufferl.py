@@ -68,8 +68,8 @@ def create(config, vecenv, policy, optimizer=None, wandb=None, use_flow_matching
     if config.compile:
         policy = torch.compile(policy, mode=config.compile_mode)
 
-    optimizer = torch.optim.SGD(policy.parameters(), lr=config.learning_rate)
-    # optimizer = torch.optim.Adam(policy.parameters(), lr=config.learning_rate, eps=1e-5)
+    # optimizer = torch.optim.SGD(policy.parameters(), lr=config.learning_rate)
+    optimizer = torch.optim.Adam(policy.parameters(), lr=config.learning_rate, eps=1e-5)
 
     # Store initial policy weights for regenerative regularization
     # https://arxiv.org/pdf/2308.11958
