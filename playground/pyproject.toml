@@ -18,9 +18,9 @@ dependencies = [
     "jax",
     "playground==0.0.5",
     "matplotlib==3.9.2",
-    "jax_dataclasses==1.6.1",
+    "jax_dataclasses>=1.6.3",
     "wandb==0.21.0",
-    "tyro==0.9.26",
+    "tyro>=1.0.0",
 ]
 
 [tool.setuptools.package-data]
